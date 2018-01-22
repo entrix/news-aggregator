@@ -1,0 +1,4 @@
+include "news-parser"
+include 'news-core'
+
+rootProject.name = 'news-aggregator'
