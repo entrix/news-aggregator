@@ -135,3 +135,6 @@ Temporary Items
 
 
 # End of https://www.gitignore.io/api/java,linux,macos,java-web,jetbrains+iml
+
+#Gradle build content
+build/**/**
