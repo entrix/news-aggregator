@@ -1,4 +1,4 @@
-package me.bubbleinvestor.parser;
+package me.bubbleinvestor.model;
 
 public class NewsEntity {
 
