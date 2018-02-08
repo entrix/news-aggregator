@@ -1,21 +1,42 @@
 package me.bubbleinvestor.model;
 
+import io.searchbox.annotations.JestId;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+
+import java.util.Date;
+
+/**
+ * Created by SBT-Volkov-AV on 26.01.2018.
+ */
+@Builder
+@ToString
 public class NewsEntity {
 
-    private String title;
-
-    private String desc;
-
-    public NewsEntity(String title, String desc) {
-        this.title = title;
-        this.desc = desc;
+    public NewsEntity() {
     }
 
-    public String getTitle() {
-        return title;
+    public NewsEntity(String id, String name, String description, Date datetime) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.datetime = datetime;
     }
 
-    public String getDesc() {
-        return desc;
-    }
+    @JestId
+    @Getter
+    @Setter
+    private String id;
+    @Getter
+    @Setter
+    private String name;
+    @Getter
+    @Setter
+    private String description;
+    @Getter
+    @Setter
+    private Date datetime;
+
 }

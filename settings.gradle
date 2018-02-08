@@ -1,4 +1,4 @@
-include "news-model"
+//include "news-model"
 include 'news-core'
 
 rootProject.name = 'news-aggregator'
