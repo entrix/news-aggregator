@@ -18,7 +18,7 @@ tasks.withType(JavaCompile) {
 
 buildscript {
     ext {
-        springBootVersion = '2.0.0.BUILD-SNAPSHOT'
+        springBootVersion = '2.0.0.M7'
     }
     repositories {
         mavenCentral()
@@ -39,18 +39,18 @@ repositories {
 }
 dependencies {
     compile project(':news-core')
-    compile group: 'org.springframework.boot', name: 'spring-boot-starter-webflux', version:'2.0.0.M7'
-    compile group: 'org.springframework.boot', name: 'spring-boot-starter-reactor-netty', version:'2.0.0.M7'
-    compile group: 'org.springframework.boot', name: 'spring-boot-starter-test', version:'2.0.0.M7'
-    compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version:'2.9.2'
-    compile group: 'io.netty', name: 'netty-buffer', version:'4.1.17.Final'
-    compile group: 'io.projectreactor.ipc', name: 'reactor-netty', version:'0.7.2.RELEASE'
-    compile group: 'org.projectlombok', name: 'lombok', version:'1.16.20'
-    compile group: 'org.slf4j', name: 'slf4j-api', version:'1.7.9'
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-webflux'
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-reactor-netty'
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-test'
+    compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind'
+    compile group: 'io.netty', name: 'netty-buffer'
+    compile group: 'io.projectreactor.ipc', name: 'reactor-netty'
+    compile group: 'org.projectlombok', name: 'lombok'
+    compile group: 'org.slf4j', name: 'slf4j-api'
     compile group: 'org.slf4j', name: 'jcl-over-slf4j', version:'1.7.25'
-    compile group: 'ch.qos.logback', name: 'logback-core', version:'1.2.3'
-    compile group: 'ch.qos.logback', name: 'logback-classic', version:'1.2.3'
-    compile group: 'org.apache.httpcomponents', name: 'httpcore', version:'4.4.9'
+    compile group: 'ch.qos.logback', name: 'logback-core'
+    compile group: 'ch.qos.logback', name: 'logback-classic'
+    compile group: 'org.apache.httpcomponents', name: 'httpcore'
     compile group: 'io.searchbox', name: 'jest', version:'5.3.2'
     compile group: 'org.elasticsearch', name: 'elasticsearch', version:'5.3.2'
     compile(group: 'org.springframework.boot', name: 'spring-boot-starter') {
@@ -59,7 +59,7 @@ dependencies {
 //    compile group: 'org.springframework.boot', name: 'spring-boot-starter-data-elasticsearch'
     testCompile group: 'junit', name: 'junit', version:'4.12'
     testCompile group: 'org.springframework', name: 'spring-test', version:'5.0.2.RELEASE'
-    testCompile group: 'org.skyscreamer', name: 'jsonassert', version:'1.5.0'
+    testCompile group: 'org.skyscreamer', name: 'jsonassert'
     testCompile(group: 'org.springframework.boot', name: 'spring-boot-starter-test') {
         exclude(module: 'commons-logging')
     }
