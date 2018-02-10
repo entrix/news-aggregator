@@ -7,3 +7,8 @@ subprojects {
         mavenCentral()
     }
 }
+
+task copyClasses(type: Copy) {
+    from 'news-core/build/classes'
+    into 'news-rest/build/classes'
+}

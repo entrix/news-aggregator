@@ -15,7 +15,6 @@ tasks.withType(JavaCompile) {
     options.encoding = 'UTF-8'
 }
 
-
 buildscript {
     ext {
         springBootVersion = '2.0.0.M7'
@@ -37,6 +36,7 @@ repositories {
     maven { url "https://repo.spring.io/milestone" }
     maven { url "http://repo.maven.apache.org/maven2" }
 }
+
 dependencies {
     compile project(':news-core')
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-webflux'
@@ -64,6 +64,7 @@ dependencies {
         exclude(module: 'commons-logging')
     }
 }
+
 jar {
     manifest {
         attributes(
