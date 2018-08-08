@@ -16,14 +16,6 @@ public class ElasticsearchProperties {
     private int socketTimeout;
     private int maxRetryTimeoutMillis;
 
-    public ElasticsearchProperties(List<String> hosts, int connectTimeout, int connectionRequestTimeout, int socketTimeout, int maxRetryTimeoutMillis) {
-        this.hosts = hosts;
-        this.connectTimeout = connectTimeout;
-        this.connectionRequestTimeout = connectionRequestTimeout;
-        this.socketTimeout = socketTimeout;
-        this.maxRetryTimeoutMillis = maxRetryTimeoutMillis;
-    }
-
     HttpHost[] hosts() {
         return hosts
                 .stream()
