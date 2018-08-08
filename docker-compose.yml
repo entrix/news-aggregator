@@ -1,0 +1,9 @@
+version: '3'
+services:
+  news-aggregator:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+       - "5000:8080"
+    image: 'me.bubbleinvestor/news-aggregator:latest'

@@ -1,0 +1,22 @@
+logging:
+  level:
+    .: error
+    org.springframework: ERROR
+    me.bubbleinvestor: TRACE
+elasticsearch:
+  hosts:
+    - http://localhost:9200
+  connectTimeout: 10000
+  connectionRequestTimeout: 10000
+  socketTimeout: 10000
+  maxRetryTimeoutMillis: 60000
+spring:
+  devtools:
+    livereload:
+      enabled: true
+    restart:
+      enabled: true
+  profiles:
+    active: "dev"
+  main:
+    banner-mode: "off"
