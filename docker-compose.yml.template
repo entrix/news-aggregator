@@ -2,7 +2,7 @@ version: '3'
 services:
   news-aggregator:
     build:
-      context: .
+      context: ./
       dockerfile: Dockerfile
     ports:
        - "5000:8080"
