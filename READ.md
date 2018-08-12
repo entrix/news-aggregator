@@ -7,3 +7,5 @@ run in root dir:
  
  
  [Docker gradle plugin](https://github.com/palantir/gradle-docker) help to work with docker
+ 
+ [ELK in Docker](https://github.com/deviantony/docker-elk) help to work with elk in docker
