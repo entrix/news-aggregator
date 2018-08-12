@@ -5,5 +5,51 @@ services:
       context: ./
       dockerfile: Dockerfile
     ports:
-       - "5000:8080"
+       - "8080:8080"
+    links:
+      - elasticsearch
+      - elasticsearch2
     image: 'me.bubbleinvestor/news-aggregator:latest'
+    container_name: news-aggregator
+  kibana:
+    image: docker.elastic.co/kibana/kibana:6.3.2
+    container_name: kibana
+    links:
+      - elasticsearch
+      - elasticsearch2
+    ports:
+      - 5601:5601
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:6.3.2
+    container_name: elasticsearch
+    environment:
+      - cluster.name=docker-cluster
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - esdata1:/usr/share/elasticsearch/data
+    ports:
+      - 9200:9200
+  elasticsearch2:
+    image: docker.elastic.co/elasticsearch/elasticsearch:6.3.2
+    container_name: elasticsearch2
+    environment:
+      - cluster.name=docker-cluster
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - "discovery.zen.ping.unicast.hosts=elasticsearch"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - esdata2:/usr/share/elasticsearch/data
+volumes:
+  esdata1:
+    driver: local
+  esdata2:
+    driver: local
