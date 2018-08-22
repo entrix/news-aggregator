@@ -1,47 +1,52 @@
 version: '3'
 services:
-  elasticsearch:
+  zookeeper:
     build:
-      context: elasticsearch/
-    volumes:
-      - ./elasticsearch/config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml:ro
+      context: zookeeper/
+    container_name: zookeeper
     ports:
-      - "9200:9200"
-      - "9300:9300"
-    environment:
-      ES_JAVA_OPTS: "-Xmx256m -Xms256m"
-  kibana:
+      - "2181:2181"
+  kafka:
     build:
-      context: kibana/
-    container_name: kibana
-    volumes:
-      - ./kibana/config/:/usr/share/kibana/config:ro
+      context: kafka/
+    container_name: kafka
     ports:
-      - "5601:5601"
+      - "9092:9092"
     links:
-      - elasticsearch
+      - zookeeper
     depends_on:
-      - elasticsearch
-  logstash:
-    build:
-      context: logstash/
-    volumes:
-      - ./logstash/config/logstash.yml:/usr/share/logstash/config/logstash.yml:ro
-      - ./logstash/pipeline:/usr/share/logstash/pipeline:ro
-    ports:
-      - "5000:5000"
+      - zookeeper
     environment:
-      LS_JAVA_OPTS: "-Xmx256m -Xms256m"
+      KAFKA_ADVERTISED_HOST_NAME: 127.0.0.1
+      KAFKA_CREATE_TOPICS: "test:1:1"
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+  cp-kafka-rest:
+    build:
+       context: cp-kafka-rest/
+    container_name: cp-kafka-rest
+    ports:
+      - "8082:8082"
     depends_on:
-      - elasticsearch
+      - kafka
+  kafka-topics-ui:
+    build:
+      context: kafka-topics-ui/
+    container_name: kafka-topics-ui
+    environment:
+      KAFKA_REST_PROXY_URL: http://localhost:8082
+      PROXY: 'true'
+    ports:
+      - "3030:3030"
+    depends_on:
+      - cp-kafka-rest
   news-aggregator:
     build:
       context: ./
       dockerfile: Dockerfile
     ports:
        - "8080:8080"
-    links:
-      - elasticsearch
     image: 'me.bubbleinvestor/news-aggregator:latest'
     container_name: news-aggregator
 
