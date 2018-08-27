@@ -1,54 +1,60 @@
 version: '3'
 services:
-  zookeeper:
+  elasticsearch:
     build:
-      context: zookeeper/
-    container_name: zookeeper
+      context: elasticsearch/
+    volumes:
+      - ./elasticsearch/config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml:ro
     ports:
-      - "2181:2181"
-  kafka:
+      - "9200:9200"
+      - "9300:9300"
+    environment:
+      ES_JAVA_OPTS: "-Xmx256m -Xms256m"
+  kibana:
+    build:
+      context: kibana/
+    container_name: kibana
+    volumes:
+      - ./kibana/config/:/usr/share/kibana/config:ro
+    ports:
+      - "5601:5601"
+    links:
+      - elasticsearch
+    depends_on:
+      - elasticsearch
+  logstash:
+    build:
+      context: logstash/
+    volumes:
+      - ./logstash/config/logstash.yml:/usr/share/logstash/config/logstash.yml:ro
+      - ./logstash/pipeline:/usr/share/logstash/pipeline:ro
+    ports:
+      - "5000:5000"
+    environment:
+      LS_JAVA_OPTS: "-Xmx256m -Xms256m"
+    depends_on:
+      - elasticsearch
+  kafka-lenses-dev:
     build:
       context: kafka/
-    container_name: kafka
-    ports:
-      - "9092:9092"
-    links:
-      - zookeeper
-    depends_on:
-      - zookeeper
-    environment:
-      KAFKA_ADVERTISED_HOST_NAME: 127.0.0.1
-      KAFKA_CREATE_TOPICS: "test:1:1"
-      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-  cp-kafka-rest:
-    build:
-       context: cp-kafka-rest/
-    container_name: cp-kafka-rest
-    ports:
-      - "8082:8082"
-    depends_on:
-      - kafka
-  kafka-topics-ui:
-    build:
-      context: kafka-topics-ui/
-    container_name: kafka-topics-ui
-    environment:
-      KAFKA_REST_PROXY_URL: http://localhost:8082
-      PROXY: 'true'
+    container_name: news-aggregator_kafka
     ports:
       - "3030:3030"
-    depends_on:
-      - cp-kafka-rest
+      - "2181:2181"
+      - "9092:9092"
+      - "8081:8081"
+    environment:
+      - SAMPLEDATA=0
+      - ENABLE_SSL=0
+      - CONNECT_HEAP=2G
+      - DEBUG=1
   news-aggregator:
     build:
       context: ./
       dockerfile: Dockerfile
     ports:
        - "8080:8080"
+    links:
+      - elasticsearch
     image: 'me.bubbleinvestor/news-aggregator:latest'
     container_name: news-aggregator
-
-
-

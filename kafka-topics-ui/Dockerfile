@@ -1,1 +1,0 @@
-FROM landoop/kafka-topics-ui

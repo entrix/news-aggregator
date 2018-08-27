@@ -24,4 +24,9 @@ To build and launch app
  
  
  ###Kafka
- [Kafka in Docker](https://github.com/wurstmeister/kafka-docker/wiki/Connectivity) info about network interaction through kafka  
+ [Kafka in Docker](https://github.com/Landoop/fast-data-dev/) info about network interaction through kafka
+ 
+ interact with kafka 
+ `docker run --rm -it --net=host news-aggregator_kafka-lenses-dev bash`
+ 
+ `kafka-topics --zookeeper 127.0.0.1:2181 --create --topic test --partitions 3 --replication-factor 1`  

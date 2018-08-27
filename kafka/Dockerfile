@@ -1,2 +1,2 @@
-#https://hub.docker.com/r/wurstmeister/kafka/
-FROM wurstmeister/kafka
+#https://github.com/Landoop/fast-data-dev
+FROM landoop/fast-data-dev
