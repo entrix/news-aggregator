@@ -2,59 +2,59 @@ version: '3'
 services:
   elasticsearch:
     build:
-      context: elasticsearch/
+      context: infrastructure/elasticsearch/
     volumes:
-      - ./elasticsearch/config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml:ro
+    - ./infrastructure/elasticsearch/config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml:ro
     ports:
-      - "9200:9200"
-      - "9300:9300"
+    - "9200:9200"
+    - "9300:9300"
     environment:
       ES_JAVA_OPTS: "-Xmx256m -Xms256m"
   kibana:
     build:
-      context: kibana/
+      context: infrastructure/kibana/
     container_name: kibana
     volumes:
-      - ./kibana/config/:/usr/share/kibana/config:ro
+    - ./infrastructure/kibana/config/:/usr/share/kibana/config:ro
     ports:
-      - "5601:5601"
+    - "5601:5601"
     links:
-      - elasticsearch
+    - elasticsearch
     depends_on:
-      - elasticsearch
+    - elasticsearch
   logstash:
     build:
-      context: logstash/
+      context: infrastructure/logstash/
     volumes:
-      - ./logstash/config/logstash.yml:/usr/share/logstash/config/logstash.yml:ro
-      - ./logstash/pipeline:/usr/share/logstash/pipeline:ro
+    - ./infrastructure/logstash/config/logstash.yml:/usr/share/logstash/config/logstash.yml:ro
+    - ./infrastructure/logstash/pipeline:/usr/share/logstash/pipeline:ro
     ports:
-      - "5000:5000"
+    - "5000:5000"
     environment:
       LS_JAVA_OPTS: "-Xmx256m -Xms256m"
     depends_on:
-      - elasticsearch
+    - elasticsearch
   kafka-lenses-dev:
     build:
-      context: kafka/
+      context: infrastructure/kafka/
     container_name: news-aggregator_kafka
     ports:
-      - "3030:3030"
-      - "2181:2181"
-      - "9092:9092"
-      - "8081:8081"
+    - "3030:3030"
+    - "2181:2181"
+    - "9092:9092"
+    - "8081:8081"
     environment:
-      - SAMPLEDATA=0
-      - ENABLE_SSL=0
-      - CONNECT_HEAP=2G
-      - DEBUG=1
+    - SAMPLEDATA=0
+    - ENABLE_SSL=0
+    - CONNECT_HEAP=2G
+    - DEBUG=1
   news-aggregator:
     build:
       context: ./
       dockerfile: Dockerfile
-    ports:
-       - "8080:8080"
-    links:
-      - elasticsearch
-    image: 'me.bubbleinvestor/news-aggregator:latest'
     container_name: news-aggregator
+    ports:
+    - "8080:8080"
+    links:
+    - elasticsearch
+    image: 'me.bubbleinvestor/news-aggregator:latest'

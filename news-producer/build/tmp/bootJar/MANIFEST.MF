@@ -1,0 +1,4 @@
+Manifest-Version: 1.0
+Start-Class: me.bubbleinvestor.newsproducer.NewsProducerApplication
+Main-Class: org.springframework.boot.loader.JarLauncher
+

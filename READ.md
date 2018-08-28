@@ -5,8 +5,19 @@
 You should have docker.
 
 
+
+###Building 
+
+IDE project
+To build project
+
+ `./gradlew idea `
+
 To build and launch app 
 
+launch `start.sh` in root dir
+
+or use manual commands
  in root dir:
  `./gradlew clean build docker`
  
