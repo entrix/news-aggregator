@@ -62,15 +62,15 @@ services:
     links:
       - kafka-lenses-dev
     image: 'me.bubbleinvestor/news-producer:latest'
-  new-inference-engine:
+  news-inference-engine:
     build:
-      context: ./new-inference-engine/
+      context: ./news-inference-engine/
       dockerfile: Dockerfile
-    container_name: new-inference-engine
+    container_name: news-inference-engine
     ports:
       - "8181:8080"
     depends_on:
       - kafka-lenses-dev
     links:
       - kafka-lenses-dev
-    image: 'me.bubbleinvestor/new-inference-engine:latest'
+    image: 'me.bubbleinvestor/news-inference-engine:latest'
