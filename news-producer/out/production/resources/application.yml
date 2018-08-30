@@ -1,0 +1,7 @@
+kafka:
+  topic:
+    name: test1
+  group:
+    id: bubble
+  bootstrap:
+    servers: "localhost:9092"

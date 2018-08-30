@@ -1,0 +1,1 @@
+FROM me.bubbleinvestor/new-inference-engine:latest

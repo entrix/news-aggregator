@@ -5,6 +5,6 @@ kafka:
   topic:
     name: test1
   group:
-    id: bubble
+    id: inferenceengine
   bootstrap:
     servers: "kafka-lenses-dev:9092"

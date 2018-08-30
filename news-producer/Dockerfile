@@ -1,2 +1,1 @@
-#https://github.com/Landoop/fast-data-dev
-FROM landoop/fast-data-dev
+FROM me.bubbleinvestor/news-producer:latest

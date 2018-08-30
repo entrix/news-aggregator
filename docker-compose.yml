@@ -1,60 +1,76 @@
 version: '3'
 services:
-  elasticsearch:
-    build:
-      context: infrastructure/elasticsearch/
-    volumes:
-    - ./infrastructure/elasticsearch/config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml:ro
-    ports:
-    - "9200:9200"
-    - "9300:9300"
-    environment:
-      ES_JAVA_OPTS: "-Xmx256m -Xms256m"
-  kibana:
-    build:
-      context: infrastructure/kibana/
-    container_name: kibana
-    volumes:
-    - ./infrastructure/kibana/config/:/usr/share/kibana/config:ro
-    ports:
-    - "5601:5601"
-    links:
-    - elasticsearch
-    depends_on:
-    - elasticsearch
-  logstash:
-    build:
-      context: infrastructure/logstash/
-    volumes:
-    - ./infrastructure/logstash/config/logstash.yml:/usr/share/logstash/config/logstash.yml:ro
-    - ./infrastructure/logstash/pipeline:/usr/share/logstash/pipeline:ro
-    ports:
-    - "5000:5000"
-    environment:
-      LS_JAVA_OPTS: "-Xmx256m -Xms256m"
-    depends_on:
-    - elasticsearch
+#  elasticsearch:
+#    build:
+#      context: infrastructure/elasticsearch/
+#    volumes:
+#      - ./infrastructure/elasticsearch/config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml:ro
+#    ports:
+#      - "9200:9200"
+#      - "9300:9300"
+#    environment:
+#      ES_JAVA_OPTS: "-Xmx256m -Xms256m"
+#  kibana:
+#    build:
+#      context: infrastructure/kibana/
+#    container_name: kibana
+#    volumes:
+#      - ./infrastructure/kibana/config/:/usr/share/kibana/config:ro
+#    ports:
+#      - "5601:5601"
+#    links:
+#      - elasticsearch
+#    depends_on:
+#      - elasticsearch
+#  logstash:
+#    build:
+#      context: infrastructure/logstash/
+#    volumes:
+#      - ./infrastructure/logstash/config/logstash.yml:/usr/share/logstash/config/logstash.yml:ro
+#      - ./infrastructure/logstash/pipeline:/usr/share/logstash/pipeline:ro
+#    ports:
+#      - "5000:5000"
+#    environment:
+#      LS_JAVA_OPTS: "-Xmx256m -Xms256m"
+#    depends_on:
+#      - elasticsearch
   kafka-lenses-dev:
     build:
       context: infrastructure/kafka/
     container_name: news-aggregator_kafka
     ports:
-    - "3030:3030"
-    - "2181:2181"
-    - "9092:9092"
-    - "8081:8081"
+      - "3030:3030"
+      - "2181:2181"
+      - "9092:9092"
+      - "8081:8081"
     environment:
-    - SAMPLEDATA=0
-    - ENABLE_SSL=0
-    - CONNECT_HEAP=2G
-    - DEBUG=1
-  news-aggregator:
+      - SAMPLEDATA=0
+      - ENABLE_SSL=0
+      - CONNECT_HEAP=2G
+      - DEBUG=1
+      - KAFKA_ADVERTISED_HOST_NAME=kafka-lenses-dev
+      - KAFKA_BROKER_ID = 999
+  news-producer:
     build:
-      context: ./
+      context: ./news-producer/
       dockerfile: Dockerfile
-    container_name: news-aggregator
+    container_name: news-producer
     ports:
-    - "8080:8080"
+       - "8080:8080"
+    depends_on:
+      - kafka-lenses-dev
     links:
-    - elasticsearch
-    image: 'me.bubbleinvestor/news-aggregator:latest'
+      - kafka-lenses-dev
+    image: 'me.bubbleinvestor/news-producer:latest'
+  new-inference-engine:
+    build:
+      context: ./new-inference-engine/
+      dockerfile: Dockerfile
+    container_name: new-inference-engine
+    ports:
+      - "8181:8080"
+    depends_on:
+      - kafka-lenses-dev
+    links:
+      - kafka-lenses-dev
+    image: 'me.bubbleinvestor/new-inference-engine:latest'

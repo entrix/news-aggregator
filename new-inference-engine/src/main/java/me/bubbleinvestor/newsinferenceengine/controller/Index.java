@@ -1,10 +1,11 @@
-package me.bubbleinvestor.newsproducer.controller;
+package me.bubbleinvestor.newsinferenceengine.controller;
 
-import me.bubbleinvestor.newsproducer.service.SampleProducer;
+import me.bubbleinvestor.newsinferenceengine.service.SampleConsumer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import reactor.core.Disposable;
 
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
@@ -16,20 +17,17 @@ public class Index {
     private String topic;
 
     @Autowired
-    SampleProducer producer;
+    SampleConsumer consumer;
 
     @RequestMapping("/")
     public String index() throws InterruptedException {
         int count = 20;
         CountDownLatch latch = new CountDownLatch(count);
-        producer.sendMessages(topic, count, latch);
+        Disposable disposable = consumer.consumeMessages(topic, latch);
         latch.await(10, TimeUnit.SECONDS);
-        return "Greetings from Spring Boot!";
+        disposable.dispose();
+        return "hi from newsinferenceengine";
     }
 
-    @RequestMapping("/stop")
-    public String stop() {
-        producer.close();
-        return "Stopped";
-    }
+
 }
