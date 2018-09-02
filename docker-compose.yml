@@ -1,5 +1,7 @@
 version: '3'
 services:
+# TODO:for all networks:
+#      - bubblenet
 #  elasticsearch:
 #    build:
 #      context: infrastructure/elasticsearch/
@@ -38,6 +40,7 @@ services:
     build:
       context: infrastructure/kafka/
     container_name: news-aggregator_kafka
+    privileged: true
     ports:
       - "3030:3030"
       - "2181:2181"
@@ -50,6 +53,8 @@ services:
       - DEBUG=1
       - KAFKA_ADVERTISED_HOST_NAME=kafka-lenses-dev
       - KAFKA_BROKER_ID = 999
+    networks:
+      - bubblenet
   news-producer:
     build:
       context: ./news-producer/
@@ -57,11 +62,18 @@ services:
     container_name: news-producer
     ports:
        - "8080:8080"
+       - "5005:5005"
+    environment:
+      JAVA_OPTS: "-Xdebug -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005"
+      JPDA_ADDRESS: "5005"
+      JPDA_TRANSPORT: "dt_socket"
     depends_on:
       - kafka-lenses-dev
     links:
       - kafka-lenses-dev
     image: 'me.bubbleinvestor/news-producer:latest'
+    networks:
+      - bubblenet
   news-inference-engine:
     build:
       context: ./news-inference-engine/
@@ -74,3 +86,9 @@ services:
     links:
       - kafka-lenses-dev
     image: 'me.bubbleinvestor/news-inference-engine:latest'
+    networks:
+      - bubblenet
+
+networks:
+  bubblenet:
+    driver: bridge

@@ -1,0 +1,10 @@
+spring:
+  kafka:
+    bootstrap-servers: "kafka-lenses-dev:9092"
+kafka:
+  topic:
+    name: test1
+  group:
+    id: inferenceengine
+  bootstrap:
+    servers: "kafka-lenses-dev:9092"

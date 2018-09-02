@@ -30,6 +30,6 @@ public class Index {
     @RequestMapping("/stop")
     public String stop() {
         producer.close();
-        return "Stopped";
+        return "Stopped"    ;
     }
 }

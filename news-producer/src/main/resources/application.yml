@@ -1,10 +1,12 @@
+server:
+  port : 8080
 spring:
   kafka:
-    bootstrap-servers: "kafka-lenses-dev:9092"
+    bootstrap-servers: "127.0.0.1:9092"
 kafka:
   topic:
     name: test1
   group:
     id: bubble
   bootstrap:
-    servers: "kafka-lenses-dev:9092"
+    servers: "127.0.0.1:9092"
